@@ -1,0 +1,109 @@
+/* 
+QUESTION – 5
+Let A and B be two strings made up of alphabets such that A = A[1-n], B = B[1-m]. 
+We say B is a subsequence of A if there exists a sequence of indices i1 < i2 <..<im</i of A such that A[ik] = B[k].
+Given B[1-m], a string of characters from some alphabets, B^i is defined as string with the characters of B each repeating i times. 
+For example, (abbacc)^3 = aaabbbbbbaaacccccc. Also, B^0 is the empty string.
+Given strings X, Y made up of characters from 'a' - 'z' find the maximum value of M such that X^M is a subsequence of Y.
+
+Example
+Input: 3 abc aabbcc abc bbccc abcdef abc
+Output: 2 0 0
+*/
+
+
+import java.util.*;
+
+class q5 {
+	
+	//For checking if both the strings have same characters in it.
+	public boolean contains(char[] m, String n) {
+		   for(int i=0;i<m.length;i++) {
+			   if(n.indexOf(m[i])==-1) {
+				   return false;
+			   }
+		   }
+		   return true;
+		}
+		
+	// Function to get number of times it required to add same character to 1st string to get 2nd String.
+	 public int getno(char[] m,char[] n) {
+		 List<Character> x=new ArrayList<>();
+		 int count=0;
+		 int count1=0;
+		 int count2=0;
+		 
+		 //getting how many times it required to add same character to get exact of 2nd String. 
+		 f1:for(int i=0;i<m.length;i++) {
+			 for(int j=0;j<n.length;j++) {
+				 if(m[i]==n[j]) {
+					 count1++;
+				 }
+				 if(i==0) {
+					 count2=count1;
+				 }
+				 else if(count2!=count1) {
+					 break f1;
+				 }
+			 }
+			 count1=0;
+		 }
+		 
+		 //creating the result string with number of time same character is added to the 1st string to be like the 2nd String. 
+		 for(int i=0;i<m.length;i++) {
+			 for(int j=0;j<count2;j++) {
+				 x.add(m[i]);
+				
+			 }
+		 }
+		 
+		 //checking if the resulted string is same as of the 2nd String(same order of characters in both the strings).
+		 char[] chr = new char[x.size()];
+		 for(int i = 0; i < x.size(); i++) {
+		     chr[i] = x.get(i);
+		 }
+		 if(Arrays.equals(chr,n)) {
+			 return count2;
+		 }
+		 else
+			 return 0;
+		 
+	}
+	
+	//Main function 
+	 public static void main(String[] args) {
+		 Scanner scan=new Scanner(System.in);
+     System.out.println("Enter number of Test Cases");
+
+		 //number of test cases.
+		 int testcase=scan.nextInt();
+		 
+		 List<Integer> x=new ArrayList<>();
+		 scan.nextLine();
+		 q5 ak=new q5();
+		 
+    System.out.println("Enter strings");
+		 //running the program for no of test cases.
+		 for(int i=0;i<testcase;i++) {
+			 
+			//getting the 2 Strings.
+			 String X=scan.nextLine();
+			 String Y=scan.nextLine();
+			 
+			 char[] m=X.toCharArray();
+			 char[] n=Y.toCharArray();
+			 
+			 //calling the functions to get the output.
+			 if(ak.contains(m, Y)) {
+				 x.add(ak.getno(m,n));
+			 }
+			 else
+				 x.add(0);
+		 }
+		 
+		 //printing the output.
+		 x.forEach(n -> System.out.println(n));
+		 scan.close();
+	 }
+ }
+ 
